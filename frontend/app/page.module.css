@@ -1,0 +1,222 @@
+.dashboardLayout {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background-color: var(--bg-dashboard);
+}
+
+.mainContainer {
+  display: flex;
+  flex: 1;
+}
+
+.contentArea {
+  flex: 1;
+  padding: 32px 40px;
+  max-width: 1280px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 36px;
+  width: 100%;
+}
+
+.welcomeHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.welcomeTitle {
+  font-size: 28px;
+  font-weight: 800;
+  color: var(--text-primary);
+  letter-spacing: -0.5px;
+  margin-bottom: 4px;
+}
+
+.welcomeSubtitle {
+  font-size: 14px;
+  color: var(--text-secondary);
+}
+
+.timeWidget {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background-color: var(--bg-card);
+  padding: 10px 18px;
+  border-radius: var(--radius-full);
+  border: 1px solid var(--border-light);
+  box-shadow: var(--shadow-sm);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  white-space: nowrap;
+}
+
+.timeIcon {
+  color: var(--zoom-blue);
+}
+
+.actionGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.sectionHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.sectionTitleGroup {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.sectionIcon {
+  color: var(--zoom-blue);
+  width: 20px;
+  height: 20px;
+}
+
+.sectionTitle {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.countBadge {
+  background-color: var(--zoom-blue-light);
+  color: var(--zoom-blue);
+  font-size: 12px;
+  font-weight: 700;
+  padding: 2px 10px;
+  border-radius: var(--radius-full);
+}
+
+.meetingsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 20px;
+}
+
+.emptyState {
+  background-color: var(--bg-card);
+  border: 2px dashed var(--border-light);
+  border-radius: var(--radius-md);
+  padding: 40px 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  color: var(--text-muted);
+}
+
+.emptyIcon {
+  width: 48px;
+  height: 48px;
+  color: #CBD5E1;
+}
+
+.emptyText {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-secondary);
+}
+
+.loadingContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 60px;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+/* ── Responsive Breakpoints ── */
+
+/* Tablet */
+@media (max-width: 1024px) {
+  .contentArea {
+    padding: 24px 24px;
+    gap: 28px;
+  }
+
+  .actionGrid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+  }
+
+  .meetingsGrid {
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  }
+
+  .welcomeTitle {
+    font-size: 24px;
+  }
+}
+
+/* Small tablet / large mobile */
+@media (max-width: 768px) {
+  .contentArea {
+    padding: 20px 16px;
+    gap: 24px;
+  }
+
+  .actionGrid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+
+  .meetingsGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .welcomeHeader {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .welcomeTitle {
+    font-size: 22px;
+  }
+
+  .sectionTitle {
+    font-size: 18px;
+  }
+}
+
+/* Mobile */
+@media (max-width: 480px) {
+  .contentArea {
+    padding: 16px 12px;
+    gap: 20px;
+  }
+
+  .actionGrid {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  .welcomeTitle {
+    font-size: 20px;
+  }
+
+  .timeWidget {
+    padding: 8px 14px;
+    font-size: 12px;
+  }
+}

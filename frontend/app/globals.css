@@ -1,0 +1,112 @@
+/* Zoom Clone - Custom CSS Design System */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+:root {
+  --zoom-blue: #0E71EB;
+  --zoom-blue-hover: #0B5EC4;
+  --zoom-blue-light: #EBF3FF;
+  --zoom-orange: #FF742E;
+  --zoom-orange-hover: #E05C18;
+  --zoom-red: #E02828;
+  --zoom-red-hover: #B81D1D;
+  --zoom-green: #0E8A16;
+
+  --bg-dashboard: #F7F9FA;
+  --bg-card: #FFFFFF;
+  --bg-sidebar: #1E2228;
+  --bg-room: #121417;
+  --bg-tile: #24272D;
+  --bg-tile-hover: #2E323A;
+
+  --text-primary: #131619;
+  --text-secondary: #5B636A;
+  --text-muted: #8C96A0;
+  --text-light: #FFFFFF;
+
+  --border-light: #E2E8F0;
+  --border-dark: #323741;
+
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 14px rgba(0, 0, 0, 0.08);
+  --shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.12);
+
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+  --radius-full: 9999px;
+
+  --transition-fast: 0.15s ease;
+  --transition-normal: 0.25s ease;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  background-color: var(--bg-dashboard);
+  color: var(--text-primary);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+  border: none;
+  background: none;
+  outline: none;
+}
+
+input, textarea, select {
+  font-family: inherit;
+}
+
+/* Custom Scrollbars */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(140, 150, 160, 0.3);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(140, 150, 160, 0.5);
+}
+
+/* Utility Animations */
+@keyframes pulseGlow {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.6; }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideInRight {
+  from { opacity: 0; transform: translateX(20px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+.pulsing {
+  animation: pulseGlow 2s infinite ease-in-out;
+}

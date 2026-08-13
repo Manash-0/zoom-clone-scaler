@@ -1,0 +1,120 @@
+.controlBar {
+  height: 72px;
+  background-color: #1A1D21;
+  border-top: 1px solid var(--border-dark);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 28px;
+  z-index: 50;
+  box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.4);
+}
+
+.leftGroup, .centerGroup, .rightGroup {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.controlBtn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  color: #A0AEC0;
+  padding: 8px 14px;
+  border-radius: var(--radius-md);
+  transition: var(--transition-fast);
+  min-width: 68px;
+}
+
+.controlBtn:hover {
+  background-color: rgba(255, 255, 255, 0.08);
+  color: #FFFFFF;
+}
+
+.controlBtn.active {
+  background-color: rgba(14, 113, 235, 0.25);
+  color: #60A5FA;
+}
+
+.controlBtn.danger {
+  color: #F87171;
+}
+
+.btnLabel {
+  font-size: 11px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.iconWithBadge {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.badge {
+  position: absolute;
+  top: -6px;
+  right: -10px;
+  background-color: var(--zoom-blue);
+  color: #FFFFFF;
+  font-size: 10px;
+  font-weight: 700;
+  padding: 1px 5px;
+  border-radius: var(--radius-full);
+}
+
+.successIcon {
+  color: var(--zoom-green);
+}
+
+.leaveBtn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background-color: var(--zoom-red);
+  color: #FFFFFF;
+  padding: 10px 20px;
+  border-radius: var(--radius-sm);
+  font-size: 14px;
+  font-weight: 700;
+  box-shadow: 0 4px 12px rgba(224, 40, 40, 0.3);
+  transition: var(--transition-fast);
+}
+
+.leaveBtn:hover {
+  background-color: var(--zoom-red-hover);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .controlBar {
+    height: 64px;
+    padding: 0 12px;
+  }
+
+  .btnLabel {
+    display: none;
+  }
+
+  .controlBtn {
+    min-width: 44px;
+    padding: 8px;
+  }
+
+  .leftGroup, .centerGroup, .rightGroup {
+    gap: 6px;
+  }
+
+  .leaveBtn {
+    padding: 8px 14px;
+    font-size: 13px;
+  }
+
+  .leaveBtn span {
+    display: none;
+  }
+}

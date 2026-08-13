@@ -1,0 +1,157 @@
+.card {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-md);
+  padding: 20px;
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  transition: var(--transition-fast);
+}
+
+.card:hover {
+  box-shadow: var(--shadow-md);
+  border-color: rgba(14, 113, 235, 0.3);
+}
+
+.cardHeader {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.titleSection {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.title {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.description {
+  font-size: 13px;
+  color: var(--text-secondary);
+}
+
+.typeBadge {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  padding: 4px 10px;
+  border-radius: var(--radius-full);
+  letter-spacing: 0.5px;
+}
+
+.scheduled {
+  background-color: var(--zoom-blue-light);
+  color: var(--zoom-blue);
+}
+
+.instant {
+  background-color: #FFF3EB;
+  color: var(--zoom-orange);
+}
+
+.metaGrid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+
+  padding: 12px 14px;
+  background-color: #F8FAFC;
+  border-radius: var(--radius-sm);
+}
+
+.metaItem {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  color: var(--text-secondary);
+}
+
+.metaIcon {
+  color: var(--text-muted);
+}
+
+.codeText {
+  font-family: monospace;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  color: var(--text-primary);
+}
+
+.cardFooter {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 4px;
+}
+
+.copyBtn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 14px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-light);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-secondary);
+  transition: var(--transition-fast);
+}
+
+.copyBtn:hover {
+  background-color: #F1F5F9;
+  color: var(--text-primary);
+}
+
+.copyIconCheck {
+  color: var(--zoom-green);
+}
+
+.rightActions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.cancelBtn {
+  padding: 8px 12px;
+  border-radius: var(--radius-sm);
+  color: var(--text-muted);
+  transition: var(--transition-fast);
+}
+
+.cancelBtn:hover {
+  background-color: #FEE2E2;
+  color: var(--zoom-red);
+}
+
+.startBtn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background-color: var(--zoom-blue);
+  color: #FFFFFF;
+  padding: 8px 18px;
+  border-radius: var(--radius-sm);
+  font-size: 13px;
+  font-weight: 600;
+  box-shadow: 0 2px 8px rgba(14, 113, 235, 0.3);
+  transition: var(--transition-fast);
+}
+
+.startBtn:hover {
+  background-color: var(--zoom-blue-hover);
+}
+
+.playIcon {
+  fill: currentColor;
+}

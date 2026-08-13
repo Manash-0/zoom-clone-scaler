@@ -1,7 +1,6 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  output: 'standalone',
   // Allow other devices on LAN to load dev scripts and HMR
   allowedDevOrigins: [
     '10.0.240.224',

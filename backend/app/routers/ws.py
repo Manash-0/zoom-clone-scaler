@@ -122,6 +122,13 @@ async def websocket_signaling(websocket: WebSocket, meeting_code: str):
                 if target_id:
                     await manager.send_to_peer(meeting_code, target_id, payload)
 
+            elif msg_type == "ping":
+                # Keep-alive — respond with pong
+                try:
+                    await websocket.send_json({"type": "pong"})
+                except Exception:
+                    pass
+
     except WebSocketDisconnect:
         disconnected_peer = manager.disconnect(websocket, meeting_code)
         if disconnected_peer:

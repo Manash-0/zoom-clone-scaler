@@ -9,6 +9,7 @@ import DashboardActionButton from '@/components/DashboardActionButton';
 import MeetingCard from '@/components/MeetingCard';
 import ScheduleMeetingModal from '@/components/ScheduleMeetingModal';
 import JoinMeetingModal from '@/components/JoinMeetingModal';
+import SettingsModal from '@/components/SettingsModal';
 import { api, Meeting } from '@/lib/api';
 import styles from './page.module.css';
 
@@ -37,6 +38,7 @@ export default function DashboardPage() {
 
   const [isScheduleOpen, setIsScheduleOpen] = useState(false);
   const [isJoinOpen, setIsJoinOpen] = useState(false);
+  const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const [currentTime, setCurrentTime] = useState<string>('');
   const [greeting, setGreeting] = useState(getGreeting());
   const [dateStr, setDateStr] = useState(getFormattedDate());
@@ -108,10 +110,23 @@ export default function DashboardPage() {
 
   return (
     <div className={styles.dashboardLayout}>
-      <Navbar userName="Alex Johnson" avatarColor="#0E71EB" />
+      <Navbar
+        userName="Alex Johnson"
+        avatarColor="#0E71EB"
+        onOpenSettings={() => setIsSettingsOpen(true)}
+      />
 
       <div className={styles.mainContainer}>
-        <SidebarNav activeTab={activeTab} onTabChange={setActiveTab} />
+        <SidebarNav
+          activeTab={activeTab}
+          onTabChange={(tab) => {
+            if (tab === 'settings') {
+              setIsSettingsOpen(true);
+            } else {
+              setActiveTab(tab);
+            }
+          }}
+        />
 
         <main className={styles.contentArea}>
           <div className={styles.welcomeHeader}>
@@ -226,6 +241,11 @@ export default function DashboardPage() {
         isOpen={isJoinOpen}
         onClose={() => setIsJoinOpen(false)}
         defaultUserName="Alex Johnson"
+      />
+
+      <SettingsModal
+        isOpen={isSettingsOpen}
+        onClose={() => setIsSettingsOpen(false)}
       />
     </div>
   );

@@ -12,6 +12,9 @@ import {
   PhoneOff,
   Check,
   Copy,
+  Monitor,
+  MonitorOff,
+  ShieldCheck,
 } from 'lucide-react';
 import { copyToClipboard } from '@/lib/utils';
 import styles from './ControlBar.module.css';
@@ -19,12 +22,14 @@ import styles from './ControlBar.module.css';
 interface ControlBarProps {
   isMuted: boolean;
   isVideoOn: boolean;
+  isScreenSharing: boolean;
   participantCount: number;
   isParticipantsOpen: boolean;
   isChatOpen: boolean;
   meetingCode: string;
   onToggleAudio: () => void;
   onToggleVideo: () => void;
+  onToggleScreenShare: () => void;
   onToggleParticipants: () => void;
   onToggleChat: () => void;
   onLeaveMeeting: () => void;
@@ -33,12 +38,14 @@ interface ControlBarProps {
 export default function ControlBar({
   isMuted,
   isVideoOn,
+  isScreenSharing,
   participantCount,
   isParticipantsOpen,
   isChatOpen,
   meetingCode,
   onToggleAudio,
   onToggleVideo,
+  onToggleScreenShare,
   onToggleParticipants,
   onToggleChat,
   onLeaveMeeting,
@@ -81,6 +88,14 @@ export default function ControlBar({
 
       <div className={styles.centerGroup}>
         <button
+          className={`${styles.controlBtn} ${styles.securityBtn}`}
+          title="Security"
+        >
+          <ShieldCheck size={20} />
+          <span className={styles.btnLabel}>Security</span>
+        </button>
+
+        <button
           className={`${styles.controlBtn} ${
             isParticipantsOpen ? styles.active : ''
           }`}
@@ -103,9 +118,20 @@ export default function ControlBar({
           <span className={styles.btnLabel}>Chat</span>
         </button>
 
+        <button
+          className={`${styles.controlBtn} ${isScreenSharing ? styles.screenShareActive : ''}`}
+          onClick={onToggleScreenShare}
+          title={isScreenSharing ? 'Stop Share' : 'Share Screen'}
+        >
+          {isScreenSharing ? <MonitorOff size={20} /> : <Monitor size={20} />}
+          <span className={styles.btnLabel}>
+            {isScreenSharing ? 'Stop Share' : 'Share Screen'}
+          </span>
+        </button>
+
         <button className={styles.controlBtn} onClick={handleCopyLink} title="Invite">
           {copied ? <Check size={20} className={styles.successIcon} /> : <UserPlus size={20} />}
-          <span className={styles.btnLabel}>{copied ? 'Copied Link' : 'Invite'}</span>
+          <span className={styles.btnLabel}>{copied ? 'Copied!' : 'Invite'}</span>
         </button>
       </div>
 

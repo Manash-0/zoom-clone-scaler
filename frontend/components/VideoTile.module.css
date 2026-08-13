@@ -8,7 +8,7 @@
   justify-content: center;
   width: 100%;
   height: 100%;
-  min-height: 220px;
+  min-height: 200px;
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
   border: 2px solid transparent;
   transition: border-color 0.2s ease;
@@ -18,11 +18,21 @@
   border-color: rgba(14, 113, 235, 0.4);
 }
 
+.screenShareTile {
+  border-color: rgba(16, 185, 129, 0.5) !important;
+  background-color: #0A0C0E;
+}
+
 .videoElement {
   width: 100%;
   height: 100%;
   object-fit: cover;
   border-radius: var(--radius-md);
+}
+
+.screenShareVideo {
+  object-fit: contain !important;
+  background-color: #000000;
 }
 
 .localVideo {
@@ -73,4 +83,18 @@
 
 .mutedIcon {
   color: var(--zoom-red);
+}
+
+.screenIcon {
+  color: #34D399;
+}
+
+.screenShareLabel {
+  background-color: #10B981;
+  color: #FFFFFF;
+  font-size: 10px;
+  padding: 1px 5px;
+  border-radius: 4px;
+  font-weight: 700;
+  text-transform: uppercase;
 }

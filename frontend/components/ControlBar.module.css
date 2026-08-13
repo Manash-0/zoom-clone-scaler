@@ -8,12 +8,13 @@
   padding: 0 28px;
   z-index: 50;
   box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.4);
+  flex-shrink: 0;
 }
 
 .leftGroup, .centerGroup, .rightGroup {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 8px;
 }
 
 .controlBtn {
@@ -23,10 +24,11 @@
   justify-content: center;
   gap: 4px;
   color: #A0AEC0;
-  padding: 8px 14px;
+  padding: 8px 12px;
   border-radius: var(--radius-md);
   transition: var(--transition-fast);
-  min-width: 68px;
+  min-width: 64px;
+  position: relative;
 }
 
 .controlBtn:hover {
@@ -41,6 +43,19 @@
 
 .controlBtn.danger {
   color: #F87171;
+}
+
+.controlBtn.screenShareActive {
+  background-color: rgba(16, 185, 129, 0.25);
+  color: #34D399;
+}
+
+.controlBtn.screenShareActive:hover {
+  background-color: rgba(16, 185, 129, 0.35);
+}
+
+.securityBtn {
+  color: #34D399;
 }
 
 .btnLabel {
@@ -93,7 +108,8 @@
 @media (max-width: 768px) {
   .controlBar {
     height: 64px;
-    padding: 0 12px;
+    padding: 0 8px;
+    gap: 4px;
   }
 
   .btnLabel {
@@ -101,20 +117,40 @@
   }
 
   .controlBtn {
-    min-width: 44px;
+    min-width: 40px;
     padding: 8px;
   }
 
   .leftGroup, .centerGroup, .rightGroup {
-    gap: 6px;
+    gap: 4px;
   }
 
   .leaveBtn {
-    padding: 8px 14px;
+    padding: 8px 12px;
     font-size: 13px;
   }
 
   .leaveBtn span {
     display: none;
+  }
+
+  .securityBtn {
+    display: none;
+  }
+}
+
+@media (max-width: 480px) {
+  .controlBar {
+    height: 56px;
+    padding: 0 4px;
+  }
+
+  .controlBtn {
+    min-width: 36px;
+    padding: 6px;
+  }
+
+  .leaveBtn {
+    padding: 6px 10px;
   }
 }

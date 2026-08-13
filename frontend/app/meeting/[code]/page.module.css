@@ -30,7 +30,7 @@
   box-shadow: var(--shadow-lg);
   display: flex;
   flex-direction: column;
-  gap: 24px;
+  gap: 20px;
   animation: fadeUp 0.3s ease-out;
 }
 
@@ -41,13 +41,30 @@
 
 .preJoinHeader {
   text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+
+.brandBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background-color: rgba(16, 185, 129, 0.15);
+  color: #34D399;
+  border: 1px solid rgba(16, 185, 129, 0.3);
+  padding: 4px 10px;
+  border-radius: var(--radius-full);
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
 }
 
 .preJoinTitle {
   font-size: 24px;
   font-weight: 800;
   color: #FFFFFF;
-  margin-bottom: 6px;
 }
 
 .preJoinSubtitle {
@@ -210,6 +227,21 @@
   color: var(--zoom-green);
 }
 
+.settingsIconBtn {
+  color: #A0AEC0;
+  padding: 6px;
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: var(--transition-fast);
+}
+
+.settingsIconBtn:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  color: #FFFFFF;
+}
+
 /* Video Grid Area */
 .roomMainContent {
   flex: 1;
@@ -220,33 +252,78 @@
 
 .gridContainer {
   flex: 1;
-  padding: 20px;
-  display: grid;
-  gap: 16px;
+  padding: 16px;
+  display: flex;
   align-items: center;
   justify-content: center;
   width: 100%;
   height: 100%;
 }
 
+.tilesWrapper {
+  display: grid;
+  gap: 16px;
+  width: 100%;
+  height: 100%;
+}
+
 /* Dynamic Grid Layouts */
-.grid1 {
+.grid1 .tilesWrapper {
   grid-template-columns: 1fr;
   max-width: 960px;
+  height: 90%;
   margin: 0 auto;
 }
 
-.grid2 {
+.grid2 .tilesWrapper {
   grid-template-columns: repeat(2, 1fr);
+  max-width: 1200px;
+  height: 85%;
+  margin: 0 auto;
 }
 
-.grid3, .grid4 {
+.grid4 .tilesWrapper {
   grid-template-columns: repeat(2, 1fr);
   grid-template-rows: repeat(2, 1fr);
+  max-width: 1200px;
+  height: 90%;
+  margin: 0 auto;
 }
 
-.gridMulti {
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+.gridMulti .tilesWrapper {
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  height: 100%;
+}
+
+/* Screen Share Layout (Stage + Filmstrip) */
+.screenShareLayout {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 12px;
+  height: 100%;
+}
+
+.featuredTile {
+  flex: 1;
+  width: 100%;
+  min-height: 0;
+  display: flex;
+}
+
+.filmstrip {
+  height: 140px;
+  width: 100%;
+  display: flex;
+  gap: 12px;
+  overflow-x: auto;
+  padding-bottom: 4px;
+}
+
+.filmstrip > div {
+  min-width: 180px;
+  max-width: 220px;
+  height: 100%;
+  flex-shrink: 0;
 }
 
 /* Responsive - Pre-join */
@@ -274,7 +351,7 @@
 
   .meetingTitle {
     font-size: 14px;
-    max-width: 150px;
+    max-width: 140px;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -282,15 +359,27 @@
 
   .gridContainer {
     padding: 8px;
+  }
+
+  .tilesWrapper {
     gap: 8px;
   }
 
-  .grid2 {
+  .grid2 .tilesWrapper {
     grid-template-columns: 1fr;
   }
 
-  .grid3, .grid4 {
+  .grid4 .tilesWrapper {
     grid-template-columns: 1fr;
     grid-template-rows: auto;
+  }
+
+  .filmstrip {
+    height: 100px;
+  }
+
+  .filmstrip > div {
+    min-width: 120px;
+    max-width: 140px;
   }
 }

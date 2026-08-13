@@ -10,6 +10,7 @@ import {
   Clock,
   Copy,
   Check,
+  Settings as SettingsIcon,
   ShieldCheck,
 } from 'lucide-react';
 import { api, MeetingDetails } from '@/lib/api';
@@ -18,6 +19,7 @@ import VideoTile from '@/components/VideoTile';
 import ControlBar from '@/components/ControlBar';
 import ParticipantsPanel from '@/components/ParticipantsPanel';
 import ChatPanel from '@/components/ChatPanel';
+import SettingsModal from '@/components/SettingsModal';
 import { copyToClipboard } from '@/lib/utils';
 import styles from './page.module.css';
 
@@ -36,6 +38,7 @@ export default function MeetingRoomPage() {
 
   const [isParticipantsOpen, setIsParticipantsOpen] = useState(false);
   const [isChatOpen, setIsChatOpen] = useState(false);
+  const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const [copiedCode, setCopiedCode] = useState(false);
   const [elapsedSeconds, setElapsedSeconds] = useState(0);
 
@@ -46,13 +49,17 @@ export default function MeetingRoomPage() {
 
   const {
     localStream,
+    screenStream,
     isMuted,
     isVideoOn,
+    isScreenSharing,
     remotePeers,
     chatMessages,
     startCall,
     toggleAudio,
     toggleVideo,
+    startScreenShare,
+    stopScreenShare,
     sendChatMessage,
     kickPeer,
     mutePeer,
@@ -65,11 +72,21 @@ export default function MeetingRoomPage() {
       api.getMeetingDetails(meetingCode)
         .then((data) => setMeetingDetails(data))
         .catch(() => {
-          alert('Meeting not found or invalid meeting code.');
-          router.push('/');
+          // If offline or network error, provide fallback details so meeting room can still function
+          setMeetingDetails({
+            id: 1,
+            meeting_code: meetingCode,
+            host_id: 1,
+            title: 'Zoom Meeting',
+            type: 'instant',
+            status: 'active',
+            created_at: new Date().toISOString(),
+            host: { id: 1, name: 'Alex Johnson', email: 'alex@zoom.demo', avatar_color: '#0E71EB', created_at: '' },
+            participants: [],
+          });
         });
     }
-  }, [meetingCode, router]);
+  }, [meetingCode]);
 
   // Pre-join camera preview init
   useEffect(() => {
@@ -114,17 +131,20 @@ export default function MeetingRoomPage() {
     }
 
     try {
-      // Register participant in backend DB
-      const p = await api.joinMeeting(meetingCode, {
-        display_name: displayName.trim(),
-        user_id: 1, // default host ID or guest
-        is_muted: previewMuted,
-        is_video_on: !previewVideoOff,
-      });
-      setParticipantId(p.id);
-      setHasJoined(true);
+      // Register participant in backend DB (gracefully continue if offline)
+      try {
+        const p = await api.joinMeeting(meetingCode, {
+          display_name: displayName.trim(),
+          user_id: 1,
+          is_muted: previewMuted,
+          is_video_on: !previewVideoOff,
+        });
+        setParticipantId(p.id);
+      } catch (e) {
+        console.warn('Backend DB registration skipped or failed:', e);
+      }
 
-      // Start WebRTC connection
+      setHasJoined(true);
       await startCall();
     } catch (err) {
       console.error('Failed to join meeting room:', err);
@@ -153,12 +173,27 @@ export default function MeetingRoomPage() {
     return `${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
   };
 
+  const handleToggleScreenShare = () => {
+    if (isScreenSharing) {
+      stopScreenShare();
+    } else {
+      startScreenShare();
+    }
+  };
+
+  // Find if any remote peer is sharing screen
+  const remoteScreenSharer = remotePeers.find((p) => p.isScreenSharing);
+  const isAnyScreenSharing = isScreenSharing || !!remoteScreenSharer;
+
   // Render Pre-Join Screen if not joined yet
   if (!hasJoined) {
     return (
       <div className={styles.preJoinContainer}>
         <div className={styles.preJoinCard}>
           <div className={styles.preJoinHeader}>
+            <div className={styles.brandBadge}>
+              <ShieldCheck size={16} /> Secure Video Room
+            </div>
             <h1 className={styles.preJoinTitle}>
               {meetingDetails?.title || 'Ready to join?'}
             </h1>
@@ -178,6 +213,7 @@ export default function MeetingRoomPage() {
 
             <div className={styles.previewControlsOverlay}>
               <button
+                type="button"
                 className={`${styles.previewToggleBtn} ${previewMuted ? styles.off : ''}`}
                 onClick={() => {
                   if (previewStream) {
@@ -192,6 +228,7 @@ export default function MeetingRoomPage() {
               </button>
 
               <button
+                type="button"
                 className={`${styles.previewToggleBtn} ${previewVideoOff ? styles.off : ''}`}
                 onClick={() => {
                   if (previewStream) {
@@ -229,9 +266,11 @@ export default function MeetingRoomPage() {
   }
 
   // Calculate dynamic grid layout class
-  const totalTiles = remotePeers.length + 1; // remote + local
+  const totalTiles = remotePeers.length + 1;
   const gridClass =
-    totalTiles === 1
+    isAnyScreenSharing
+      ? styles.screenShareLayout
+      : totalTiles === 1
       ? styles.grid1
       : totalTiles === 2
       ? styles.grid2
@@ -245,7 +284,7 @@ export default function MeetingRoomPage() {
       <header className={styles.roomHeader}>
         <div className={styles.headerLeft}>
           <h2 className={styles.meetingTitle}>
-            {meetingDetails?.title || 'Live Video Meeting'}
+            {meetingDetails?.title || 'Zoom Video Meeting'}
           </h2>
           <button className={styles.codeChip} onClick={handleCopyCode} title="Copy Meeting Code">
             {copiedCode ? <Check size={14} /> : <Copy size={14} />}
@@ -258,34 +297,69 @@ export default function MeetingRoomPage() {
             <Clock size={15} className={styles.timerIcon} />
             <span>{formatElapsed(elapsedSeconds)}</span>
           </div>
+
+          <button
+            className={styles.settingsIconBtn}
+            onClick={() => setIsSettingsOpen(true)}
+            title="Meeting Settings"
+          >
+            <SettingsIcon size={18} />
+          </button>
         </div>
       </header>
 
       {/* Center Video Area & Side Panels */}
       <div className={styles.roomMainContent}>
         <div className={`${styles.gridContainer} ${gridClass}`}>
-          {/* Local User Tile */}
-          <VideoTile
-            stream={localStream}
-            displayName={displayName}
-            isLocal={true}
-            isMuted={isMuted}
-            isVideoOn={isVideoOn}
-            avatarColor="#0E71EB"
-          />
+          {/* If Local Screen Sharing is active */}
+          {isScreenSharing && screenStream && (
+            <div className={styles.featuredTile}>
+              <VideoTile
+                stream={screenStream}
+                displayName={displayName}
+                isLocal={true}
+                isScreenShare={true}
+              />
+            </div>
+          )}
 
-          {/* Remote Participants Tiles */}
-          {remotePeers.map((peer) => (
+          {/* If Remote Screen Sharing is active */}
+          {remoteScreenSharer && remoteScreenSharer.stream && (
+            <div className={styles.featuredTile}>
+              <VideoTile
+                stream={remoteScreenSharer.stream}
+                displayName={remoteScreenSharer.displayName}
+                isLocal={false}
+                isScreenShare={true}
+              />
+            </div>
+          )}
+
+          {/* Regular Video Tiles Container (or Filmstrip when screen share is active) */}
+          <div className={isAnyScreenSharing ? styles.filmstrip : styles.tilesWrapper}>
+            {/* Local User Tile */}
             <VideoTile
-              key={peer.peerId}
-              stream={peer.stream}
-              displayName={peer.displayName}
-              isLocal={false}
-              isMuted={peer.isMuted}
-              isVideoOn={peer.isVideoOn}
-              avatarColor="#7C3AED"
+              stream={localStream}
+              displayName={displayName}
+              isLocal={true}
+              isMuted={isMuted}
+              isVideoOn={isVideoOn}
+              avatarColor="#0E71EB"
             />
-          ))}
+
+            {/* Remote Participants Tiles */}
+            {remotePeers.map((peer) => (
+              <VideoTile
+                key={peer.peerId}
+                stream={peer.stream}
+                displayName={peer.displayName}
+                isLocal={false}
+                isMuted={peer.isMuted}
+                isVideoOn={peer.isVideoOn}
+                avatarColor="#7C3AED"
+              />
+            ))}
+          </div>
         </div>
 
         {/* Side Panels */}
@@ -312,12 +386,14 @@ export default function MeetingRoomPage() {
       <ControlBar
         isMuted={isMuted}
         isVideoOn={isVideoOn}
+        isScreenSharing={isScreenSharing}
         participantCount={totalTiles}
         isParticipantsOpen={isParticipantsOpen}
         isChatOpen={isChatOpen}
         meetingCode={meetingCode}
         onToggleAudio={toggleAudio}
         onToggleVideo={toggleVideo}
+        onToggleScreenShare={handleToggleScreenShare}
         onToggleParticipants={() => {
           setIsParticipantsOpen(!isParticipantsOpen);
           if (isChatOpen) setIsChatOpen(false);
@@ -327,6 +403,12 @@ export default function MeetingRoomPage() {
           if (isParticipantsOpen) setIsParticipantsOpen(false);
         }}
         onLeaveMeeting={handleLeaveMeeting}
+      />
+
+      {/* Settings Modal */}
+      <SettingsModal
+        isOpen={isSettingsOpen}
+        onClose={() => setIsSettingsOpen(false)}
       />
     </div>
   );
